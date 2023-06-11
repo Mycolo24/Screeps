@@ -21,44 +21,50 @@ var spawnerLogic = {
 
         // DEFINES LIMITS FOR EACH OF THE CREEP TYPES
         var harvesterLimit = 2;
+        var upgraderLimit = 2;
 
         // if there are no construction sites then dont spawn builders
         var builderLimit = 0; // default set to no builders
-        if (Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES)){
+        if (Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES).length > 0){
             builderLimit  = 2;
         }
         
-        var upgraderLimit = 1;
+        // if there are no hostile creeps then dont spawn attackers
+        //  default attacker limit is 0
+        var attackerLimit = 0;
+        if (Game.spawns['Spawn1'].room.find(FIND_HOSTILE_CREEPS).length > 0){
+            // set attacker limit to 2
+            attackerLimit = 2;
+        }
 
-        
-        var attackerLimit = 1;
 
 
-        // if there are less harvesters than limit then spawn
-        if(harvesters.length < harvesterLimit) {
+        // if there are less harvesters than limit and no attackers then spawn
+        if(harvesters.length < harvesterLimit && attackerLimit == 0) {
             var newName = 'Harvester' + Game.time;
             console.log('Spawning new harvester: ' + newName);
             Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,MOVE], newName, {memory: {role: 'harvester'}});        
         }
 
     
-        // if there are less than builders than limit then spawn
-        if(builders.length < builderLimit) {
+        // if there are less builders than limit and no attackers then spawn
+        if(builders.length < builderLimit && attackerLimit == 0) {
             var newName = 'Builder' + Game.time;
             console.log('Spawning new builder: ' + newName);
             Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, MOVE], newName,
             {memory: {role: 'builder'}});
         }
     
-        // if there are less than upgraders than limit then spawn
-        if(upgraders.length < upgraderLimit) {
+        // if there are less upgraders than limit and no attackers then spawn
+        if(upgraders.length < upgraderLimit && attackerLimit == 0) {
             var newName = "Upgrader" + Game.time;
             console.log("Spawning new upgrader: " + newName);
             Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, MOVE], newName,
                 {memory: {role: 'upgrader'}});
         }
 
-        if(attackers.length < attackerLimit) {
+        // if there are less attackers than limit then spawn
+        if(attackers.length < attackerLimit ) {
             var newName = 'Attacker' + Game.time;
             console.log("Spawning a new attacker: " + newName);
             Game.spawns['Spawn1'].spawnCreep([ATTACK, ATTACK, MOVE], newName,

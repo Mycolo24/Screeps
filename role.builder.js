@@ -6,11 +6,9 @@ var roleBuilder = {
 		// update creep status
 	    if(creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.building = false;
-            creep.say('🔄 harvest');
 	    }
 	    if(!creep.memory.building && creep.store.getFreeCapacity() == 0) {
 	        creep.memory.building = true;
-	        creep.say('🚧 build');
 	    }
 
 	    if(creep.memory.building) {
@@ -31,8 +29,10 @@ var roleBuilder = {
 		// if builder has no energy then harvest energy
 	    else {
 	        var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+            if (creep.harvest(sources[0]) === ERR_NOT_IN_RANGE && creep.harvest(sources[0]) !== ERR_NO_PATH) {
+                creep.moveTo(sources[0]);
+            } else if (creep.harvest(sources[1]) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[1]);
             }
 	    }
 	}

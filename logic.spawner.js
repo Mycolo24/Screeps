@@ -20,13 +20,13 @@ var spawnerLogic = {
         
 
         // DEFINES LIMITS FOR EACH OF THE CREEP TYPES
-        var harvesterLimit = 2;
+        var harvesterLimit = 3;
         var upgraderLimit = 2;
 
         // if there are no construction sites then dont spawn builders
         var builderLimit = 0; // default set to no builders
         if (Game.spawns['Spawn1'].room.find(FIND_CONSTRUCTION_SITES).length > 0){
-            builderLimit  = 2;
+            builderLimit  = 4;
         }
         
         // if there are no hostile creeps then dont spawn attackers

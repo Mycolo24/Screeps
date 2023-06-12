@@ -4,11 +4,11 @@ var roleHarvester = {
     run: function(creep) {
         // if the creep has more than a capacity of 0
 	    if(creep.store.getFreeCapacity() > 0) {
-            var sources = creep.room.find(FIND_SOURCES); // find a source
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) { // try to harvest if it is in range
-                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}}); // move to source if it is out of range
-                creep.say('🔄 harvest');
-                
+            var sources = creep.room.find(FIND_SOURCES);
+            if (creep.harvest(sources[0]) === ERR_NOT_IN_RANGE && creep.harvest(sources[0]) !== ERR_NO_PATH) {
+                creep.moveTo(sources[0]);
+            } else if (creep.harvest(sources[1]) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[1]);
             }
         }
         // if the creep is full on capacity
@@ -18,6 +18,7 @@ var roleHarvester = {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_EXTENSION || // first try to find extension
                                 structure.structureType == STRUCTURE_SPAWN || // then try to find spawn
+                                structure.structureType == STRUCTURE_CONTAINER || // then try to find container
                                 structure.structureType == STRUCTURE_TOWER) && // then try to find tower
                                 structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0; // only if they have a free capacity more than 0
                     }
